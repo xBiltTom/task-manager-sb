@@ -38,14 +38,14 @@ public class Project {
     private Set<Task> task = new HashSet<>();
 
     @Column(name="created_at", nullable = false, updatable = false)
-    private LocalDateTime creastedAt = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @PrePersist
     protected void onCreate(){
-        creastedAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
 

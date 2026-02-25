@@ -48,7 +48,7 @@ public class Task {
     @ManyToMany
     @JoinTable(
         name = "task_assignees",
-        joinColumns = @JoinColumn(name="task"),
+        joinColumns = @JoinColumn(name="task_id"),
         inverseJoinColumns = @JoinColumn(name="user_id")
     )
     private Set<User> assignees = new HashSet<>();
