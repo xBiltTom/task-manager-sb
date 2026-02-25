@@ -1,25 +1,30 @@
 package com.xdevelopers.spring_todo.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import org.springframework.cglib.core.Local;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.xdevelopers.spring_todo.model.enums.TaskPriority;
 import com.xdevelopers.spring_todo.model.enums.TaskStatus;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "tasks")
+@Getter @Setter
+@NoArgsConstructor
 public class Task {
 
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -30,7 +35,7 @@ public class Task {
     @Column(nullable = false)
     private TaskPriority priority = TaskPriority.MEDIUM;
 
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
@@ -40,92 +45,29 @@ public class Task {
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
 
-    @Column(nullable = false, updatable = false)
+    @ManyToMany
+    @JoinTable(
+        name = "task_assignees",
+        joinColumns = @JoinColumn(name="task"),
+        inverseJoinColumns = @JoinColumn(name="user_id")
+    )
+    private Set<User> assignees = new HashSet<>();
+
+    @Column(name = "created_at" ,nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column(name="updated_at",nullable = false)
     private LocalDateTime updatedAt;
 
-    public Long getId() {
-        return id;
+    @PrePersist
+    protected void onCreate(){
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @PreUpdate
+    protected void onUpdate(){
+        updatedAt = LocalDateTime.now();
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public TaskStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-
-    public TaskPriority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(TaskPriority priority) {
-        this.priority = priority;
-    }
-
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    
 
 }
