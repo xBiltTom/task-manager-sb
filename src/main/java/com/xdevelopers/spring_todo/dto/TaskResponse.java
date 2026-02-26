@@ -3,7 +3,6 @@ package com.xdevelopers.spring_todo.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.xdevelopers.spring_todo.model.Task;
@@ -37,6 +36,7 @@ public class TaskResponse {
         this.assignees = task.getAssignees().stream()
             .map(UserResponse::new)
             .collect(Collectors.toSet());
+        this.createdAt = task.getCreatedAt();
     }
 
 }

@@ -35,8 +35,8 @@ CREATE TABLE projects(
 	name 			VARCHAR(150)	NOT NULL,
 	description		TEXT,
 	owner_id		BIGINT			NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-	created_ad		TIMESTAMP 		NOT NULL DEFAULT NOW(),
-	updated_ad 		TIMESTAMP		NOT NULL DEFAULT NOW()
+	created_at		TIMESTAMP 		NOT NULL DEFAULT NOW(),
+	updated_at 		TIMESTAMP		NOT NULL DEFAULT NOW()
 );
 
 --TABLA PROJECT MEMBERS(Relacion muchos a muchos entre users y projects)
